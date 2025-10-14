@@ -9,7 +9,7 @@ This GitHub Pages site showcases:
 - **Services** – What I offer: web audits, penetration testing, bug bounty support  
 - **Contact** – How to reach me for freelance or consulting work
 
-**🔗 Live Site:** [https://bakchodsala.github.io](https://securewithparmar.github.io)
+**🔗 Live Site:** [https://securewithparmar.github.io](https://securewithparmar.github.io)
 
 ---
 
