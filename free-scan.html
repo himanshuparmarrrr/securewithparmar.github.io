@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Free Website Security Scan | SecureWithParmar</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #0f172a;
+            color: white;
+            text-align: center;
+            padding: 40px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            width: 300px;
+            border-radius: 6px;
+            border: none;
+        }
+
+        button {
+            padding: 10px 20px;
+            border-radius: 6px;
+            border: none;
+            background: #22c55e;
+            color: white;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .result-box {
+            margin-top: 30px;
+            padding: 20px;
+            background: #1e293b;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .upgrade {
+            margin-top: 20px;
+            padding: 15px;
+            background: #ef4444;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Free Website Security Snapshot</h1>
+<p>Surface-level SSL & Security Header Check</p>
+
+<p>
+<input type="checkbox" required>
+I confirm I own this website or have permission to authorize testing.
+</p>
+
+<input type="text" id="urlInput" placeholder="Enter domain (example.com)">
+<button onclick="runScan()">Scan</button>
+
+<div class="result-box" id="results">
+    <h2>Scan Results</h2>
+    <p id="sslResult">Checking SSL...</p>
+    <p id="headerResult">Checking Security Headers...</p>
+
+    <div class="upgrade">
+        <p>⚠️ This is a basic surface scan.</p>
+        <p>For full penetration testing & detailed vulnerability report, contact SecureWithParmar.</p>
+    </div>
+</div>
+
+<script>
+async function runScan() {
+    const url = document.getElementById("urlInput").value;
+    const resultsBox = document.getElementById("results");
+    resultsBox.style.display = "block";
+
+    document.getElementById("sslResult").innerText = "Checking SSL...";
+    document.getElementById("headerResult").innerText = "Checking Security Headers...";
+
+    try {
+        const sslResponse = await fetch(`https://api.ssllabs.com/api/v3/analyze?host=${url}`);
+        const sslData = await sslResponse.json();
+
+        if (sslData.endpoints && sslData.endpoints.length > 0) {
+            const grade = sslData.endpoints[0].grade;
+            document.getElementById("sslResult").innerText =
+                "SSL Grade: " + grade;
+        } else {
+            document.getElementById("sslResult").innerText =
+                "SSL information unavailable.";
+        }
+
+        const headerResponse = await fetch(`https://securityheaders.com/?q=${url}&followRedirects=on&hide=on&format=json`);
+        const headerData = await headerResponse.json();
+
+        if (headerData.grade) {
+            document.getElementById("headerResult").innerText =
+                "Security Headers Grade: " + headerData.grade;
+        } else {
+            document.getElementById("headerResult").innerText =
+                "Header information unavailable.";
+        }
+
+    } catch (error) {
+        document.getElementById("sslResult").innerText =
+            "Error scanning. Enter only domain (example.com).";
+        document.getElementById("headerResult").innerText = "";
+    }
+}
+</script>
+
+</body>
+</html>
